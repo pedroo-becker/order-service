@@ -32,14 +32,20 @@ bootBuildImage {
 	}
 }
 
+ext {
+    set('springCloudVersion', "2023.0.2")
+    set('testcontainersVersion', "1.19.8")
+    set('testKeycloakVersion', "3.3.1")
+}
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.springframework.cloud:spring-cloud-function-context")
 	implementation("org.springframework.cloud:spring-cloud-stream-binder-rabbit")
-
-
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    testImplementation "com.github.dasniko:testcontainers-keycloak:${testKeycloakVersion}"
 	runtimeOnly("org.flywaydb:flyway-core")
 	runtimeOnly("org.flywaydb:flyway-database-postgresql")
 	runtimeOnly("org.postgresql:postgresql")
@@ -47,19 +53,27 @@ dependencies {
 	runtimeOnly("org.postgresql:r2dbc-postgresql")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
 	testImplementation("com.squareup.okhttp3:mockwebserver")
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:postgresql")
 	testImplementation("org.testcontainers:r2dbc")
-
+    testImplementation("org.springframework.cloud:spring-cloud-stream-test-binder")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+//    testImplementation("org.springframework.cloud:spring-cloud-stream") {
+//        artifact {
+//            name = "spring-cloud-stream"
+//            extension = "jar"
+//            type ="test-jar"
+//            classifier = "test-binder"
+//        }
+//    }
 }
 
-ext {
-	set('springCloudVersion', "2023.0.2")
-}
+
 
 dependencyManagement {
 	imports {
